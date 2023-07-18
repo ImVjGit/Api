@@ -1,6 +1,7 @@
 package com.DemoApi.demo.ServiceImpl;
 
 import com.DemoApi.demo.Entity.Person;
+import com.DemoApi.demo.Exception.ResourceNotFoundException;
 import com.DemoApi.demo.Payload.PersonDto;
 import com.DemoApi.demo.Repositories.PersonRepository;
 import com.DemoApi.demo.Services.PersonService;
@@ -34,7 +35,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto DeletedPerson(Long pid) {
-        return null;
+
+        Person person = personRepository.findById(pid).orElseThrow(() -> new ResourceNotFoundException("Person", "id", pid));
+        return modelMapper.map(person,PersonDto.class);
     }
 
     @Override
